@@ -11,7 +11,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      theme: new ThemeData(
+        primarySwatch: Colors.teal,
+        fontFamily: 'SecularOne',
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+                  fontFamily: "Quicksand",
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+        ),
+      ),
+      debugShowCheckedModeBanner: false,
+      title: 'Expensify',
       home: MyHomePage(),
     );
   }
@@ -24,18 +38,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    new Transaction(
-      id: "t1",
-      title: "New Shoes",
-      amount: 1245.47,
-      date: DateTime.now(),
-    ),
-    new Transaction(
-      id: "t2",
-      title: "New Pair of Socks",
-      amount: 247.65,
-      date: DateTime.now(),
-    ),
+    // new Transaction(
+    //   id: "t1",
+    //   title: "New Shoes",
+    //   amount: 1245.47,
+    //   date: DateTime.now(),
+    // ),
+    // new Transaction(
+    //   id: "t2",
+    //   title: "New Pair of Socks",
+    //   amount: 247.65,
+    //   date: DateTime.now(),
+    // ),
   ];
   void _addNewTransaction(String txTitle, double txAmount) {
     var uuid = Uuid();
@@ -63,8 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutter App"),
-        backgroundColor: Colors.teal,
+        title: Text("Expensify"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),

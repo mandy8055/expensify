@@ -19,7 +19,12 @@ class _NewTransactionState extends State<NewTransaction> {
     final enteredTitle = titleController.text;
     final enteredAmount = double.parse(amountController.text);
     if (enteredTitle.isEmpty || enteredAmount <= 0) return;
-    widget.addTx(enteredTitle, enteredAmount);
+
+    widget.addTx(
+      enteredTitle,
+      enteredAmount,
+    );
+    Navigator.of(context).pop();
   }
 
   @override
@@ -32,12 +37,6 @@ class _NewTransactionState extends State<NewTransaction> {
             TextField(
               decoration: InputDecoration(
                 labelText: "Expense Title",
-                focusColor: Colors.teal,
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.teal,
-                  ),
-                ),
               ),
               // onChanged: (val) => titleInput = val,
               controller: titleController,
@@ -46,11 +45,6 @@ class _NewTransactionState extends State<NewTransaction> {
             TextField(
               decoration: InputDecoration(
                 labelText: "Expense Amount",
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.teal,
-                  ),
-                ),
               ),
               // onChanged: (val) => amountInput = val,
               controller: amountController,
@@ -63,7 +57,6 @@ class _NewTransactionState extends State<NewTransaction> {
                 'Add Transaction',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.teal,
                 ),
               ),
             )
