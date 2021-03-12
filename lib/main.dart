@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
+import './widgets/chart.dart';
 import './widgets/transaction_list.dart';
 import './widgets/new_transaction.dart';
 import './models/transaction.dart';
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: new ThemeData(
         primarySwatch: Colors.teal,
+        errorColor: Colors.red,
         fontFamily: 'SecularOne',
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -51,13 +53,29 @@ class _MyHomePageState extends State<MyHomePage> {
     //   date: DateTime.now(),
     // ),
   ];
-  void _addNewTransaction(String txTitle, double txAmount) {
+
+  List<Transaction> get _recentTransactions {
+    return _userTransactions
+        .where(
+          (tx) => tx.date.isAfter(
+            DateTime.now().subtract(
+              Duration(
+                days: 7,
+              ),
+            ),
+          ),
+        )
+        .toList();
+  }
+
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosenDate) {
     var uuid = Uuid();
     final newTx = new Transaction(
       id: uuid.v4(),
       title: txTitle,
       amount: txAmount,
-      date: DateTime.now(),
+      date: chosenDate,
     );
 
     print(newTx.id);
@@ -71,6 +89,12 @@ class _MyHomePageState extends State<MyHomePage> {
         return NewTransaction(_addNewTransaction);
       },
     );
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((tx) => tx.id == id);
+    });
   }
 
   @override
@@ -88,14 +112,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: Card(
-                child: Text("CHART APPEARS here!!"),
-                elevation: 5,
-              ),
-            ),
-            new TransactionList(_userTransactions),
+            new Chart(_recentTransactions),
+            new TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
